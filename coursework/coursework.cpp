@@ -24,7 +24,7 @@ public:
 	}
 
 	my_string(const char* c) {
-		_length = strlen(c);;
+		_length = strlen(c);
 		_ch = new char[_length + 1];
 		strcpy_s(_ch, _length + 1, c);
 	}
@@ -50,6 +50,12 @@ public:
 	void print() {
 		cout << _ch;
 	}
+	void change_ch(char* str) {
+		_length = strlen(str);
+		delete[] _ch;
+		_ch = new char[_length + 1];
+		strcpy_s(_ch, _length + 1, str);
+	}
 
 
 	friend ostream& operator << (ostream &os, const my_string& current) {
@@ -71,20 +77,35 @@ class request {
 	my_string* surname;
 	my_string* name;
 	my_string* patronymic;
+	my_string* departure_date;
+	my_string* departue_time;
+public:
+	
+	request(my_string* dep, my_string* des, my_string* fn, my_string* s, my_string* n, my_string* p, my_string* dd, my_string* dt) {
 
+		departue = dep;
+		destination = des;
+		flight_number= fn;
+		surname = s;
+		name = n;
+		patronymic = p;
+		departure_date = dd;
+		departue_time = dt;
+
+	}
 };
 
 class List {
 	struct node {
 
-		request* R;
+		//request* R;
 
 		node* next;
 		node* previous;
 
 		node() {
 
-			request* R = new request();
+			//request* R = new request();
 			next = nullptr;
 			previous = nullptr;
 
@@ -232,18 +253,23 @@ public:
 
 char* Enter() {
 
-	char* str = new char(256);
+	char* str = new char[256];
 	cin >> str;
 	return str;
-	/*
-	char sep[] = " ";
-	cin.getline(str, 256);
-	cin.ignore();
-	char* token = strtok(str, sep);
-	while (token) {
 
-		token = strtok(NULL, sep);
-	}*/
+}
+
+void enter_full_name(my_string* s, my_string* n, my_string* p) {
+	char* str = new char[256];
+	for (int i = 0; i< 3; i++) {
+		cin >> str;
+		if (i == 0)
+			s->change_ch(str);
+		if (i == 1)
+			n->change_ch(str);
+		if (i == 2)
+			p->change_ch(str);
+	}
 }
 
 void adding() {
@@ -251,11 +277,11 @@ void adding() {
 	my_string* departue;
 	my_string* destination;
 	my_string* flight_number;
-	my_string* surname;
-	my_string* name;
-	my_string* patronymic;
-	my_string* date;
-	my_string* hours;
+	my_string* surname = new my_string();
+	my_string* name = new my_string();;
+	my_string* patronymic = new my_string();;
+	my_string* departure_date;
+	my_string* departue_time;
 
 	int n = 6;
 
@@ -263,10 +289,16 @@ void adding() {
 	departue = new my_string(Enter());
 	cout << "Destination: ";
 	destination = new my_string(Enter());
-	cout << departue << "  " << destination;
 	cout << "flight number: ";
 	flight_number = new my_string(Enter());
-
+	cout << "full name: ";
+	enter_full_name(surname, name, patronymic);
+	cout << "departure date: ";
+	departure_date = new my_string(Enter());
+	cout << "departue time: ";
+	departue_time = new my_string(Enter());
+	request test (departue , destination, flight_number, surname, name , patronymic, departure_date, departue_time);
+	cout << 1;
 }
 
 void menu() {
@@ -288,10 +320,6 @@ void menu() {
 		}
 		ent = 0;
 	}
-}
-
-void kekdel() {
-
 }
 
 int main() {
