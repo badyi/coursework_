@@ -290,6 +290,10 @@ void menu() {
 	}
 }
 
+void kekdel() {
+
+}
+
 int main() {
 	menu();
 	return 0;
